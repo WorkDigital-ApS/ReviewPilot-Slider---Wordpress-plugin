@@ -1,0 +1,244 @@
+:root{
+    --rs-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.panel {
+    padding: 20px;
+    border: 1px solid #fff;
+    box-shadow: var(--rs-shadow);
+    background: #f3f3f3;
+    width: auto;
+    display: inline-block;
+}
+
+.panel > *:first-child{
+    margin-top: 0;
+}
+
+.panel > *:last-child{
+    margin-bottom: 0;
+}
+
+.panel .rs-input{
+    width: 100%;
+    max-width: 100%;
+}
+
+.rs-group-wrapper{
+    display: flex;
+    gap: 10px;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #dfdfdf;
+}
+
+.rs-input-group{
+    position: relative;
+    width: 100%;
+}
+
+.rs-input-group:not(:last-child){
+    margin-bottom: 20px;
+}
+
+.rs-input-group .rs-label {
+    position: absolute;
+    left: 12px;
+    top: 12px;/*-8px;*/
+    font-weight: normal;
+    padding: 0 4px;
+    transition: transform ease-in-out 0.3s, color ease-in-out 0.3s;
+    background: linear-gradient(0deg, rgb(243 243 243) 0%, rgb(243 243 243) 100%);
+    background-size: 100% 2px;
+    background-repeat: no-repeat;
+    background-position: 0px 7px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.rs-input-group:focus-within .rs-label,
+.rs-input-group:hover .rs-label,
+.rs-input-group:has(input:not(:placeholder-shown)) .rs-label,
+.rs-input-group .rs-label.disabled-input-label,
+.rs-input-group .rs-label.select-label{
+    transform: translateY(-20px);
+    color: var(--maincolor);
+}
+
+
+
+input.rs-input,
+select.rs-input,
+.disabled-input {
+    display: block;
+    width: 100%;
+    height: auto;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: normal;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #aaa;
+    outline: 1px solid transparent!important;
+    border-radius: 4px;
+    box-shadow: none;
+    transition: border-color ease-in-out .3s, outline ease-in-out .3s;
+}
+
+.disabled-input {
+    color: #aaa;
+    background-color: #f3f3f3;
+    pointer-events: none;
+    user-select: none;
+}
+
+input.rs-input:hover,
+input.rs-input:focus{
+    border-radius: 4px;
+    border-color: var(--maincolor);
+    outline-color: var(--maincolor)!important;
+}
+
+input.rs-input::placeholder{
+    color: transparent;
+}
+
+.rs-input-group .rs-label.disabled-input-label{
+    background: linear-gradient(0deg, rgb(243 243 243) 0%, rgb(243 243 243) 100%);
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: 0px;
+}
+
+.rs-label.checkbox-.rs-label {
+    position: relative;
+    top: auto;
+    left: auto;
+    padding: 0 16px 0;
+    transform: none!important;
+    margin: 0;
+}
+
+input[type="checkbox"],
+.rs-label.checkbox-label{
+    cursor: pointer;
+    user-select: none;
+}
+
+.rs-input-group .btn.btn-primary{
+    width: 100%;
+    font-size: 28px;
+    border-radius: 37px;
+    background-color: #ffba39;
+    color: #213336;
+    font-weight: bold;
+    border-color: #ffba39;
+    transition: border-color ease-in-out .3s, background-color ease-in-out .3s;
+}
+
+.rs-input-group .btn.btn-primary:hover{
+    background-color: color-mix(in srgb, #ffba39, #000 10%);
+    border-color: color-mix(in srgb, #ffba39, #000 10%);
+}
+
+.rs-checkbox-group{
+    margin-bottom: 10px;
+}
+
+.rs-checkbox{
+    display: inline-flex;
+    background: #fff;
+    padding: 0 6px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    flex-direction: row;
+    gap: 6px;
+    align-items: center;
+}
+
+.rs-checkbox input{
+    display: block;
+    margin: 0;
+}
+
+.rs-label.checkbox-label{
+    border-left: 1px solid #ccc;
+    padding: 5px 0 5px 5px;
+}
+
+.panel.shortcode-settings{
+    padding: 0;
+    display: inline-grid;
+    grid-template-columns: 400px auto;
+}
+
+.shortcode-settings-side{
+    border-right: 1px solid #dfdfdf
+}
+.shortcode-render-side{
+    position: relative;
+    border-left: 1px solid #fff;
+    display: grid;
+    place-content: center;
+    min-width: 400px;
+}
+
+.shortcode-settings-side,
+.shortcode-render-side{
+    padding: 20px;
+}
+
+.shortcode-render-element{
+    font-family: monospace;
+}
+
+.copy-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px 14px;
+    background-color: #fff;
+    border-radius: 0 0 0 10px;
+    border-left: 1px solid #dfdfdf;
+    border-bottom: 1px solid #dfdfdf;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.copy-icon .copied {
+    margin: 0;
+    padding: 3px 6px;
+    background-color: #333;
+    color: #fff;
+    text-transform: uppercase;
+    position: absolute;
+    top: -15px;
+    border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    letter-spacing: 1px;
+}
+
+.copy-icon .copied.visible {
+    opacity: 1;
+}
+
+.copy-icon:hover {
+    background-color: #f3f3f3;
+}
+
+.copy-icon .copied.visible + svg {
+    animation: gelatine 0.5s;
+}
+
+@keyframes gelatine {
+    from, to { transform: scale(1, 1); }
+    25% { transform: scale(0.9, 1.1); }
+    50% { transform: scale(1.1, 0.9); }
+    75% { transform: scale(0.95, 1.05); }
+}
