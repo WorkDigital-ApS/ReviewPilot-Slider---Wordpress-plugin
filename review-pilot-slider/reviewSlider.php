@@ -199,9 +199,11 @@ function shortcode_section_callback(){
 /*Shortcode registrering*/
 
 function enqueue_review_slider_script() {   
+  global $post;
+  if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'review-slider') ) {
     wp_enqueue_script( 'review_slider_script', plugin_dir_url( __FILE__ ) . 'kundeudtalelser.min.js' );
+  }
 }
-
 add_action('wp_enqueue_scripts', 'enqueue_review_slider_script');
 
 function review_slider_shortcode($atts) {
@@ -211,22 +213,20 @@ function review_slider_shortcode($atts) {
 
 	$options = [];
 
-	foreach($atts as $key => $value){
-
-		$options[] = 'data-' . $key . '="' . $value . '"';
-	}
-
-
-	ob_start();
-	?>
-
-	<rp-kundeudtalelser data-apikey="<?php echo $apiKey; ?>" <?php echo implode(" ", $options); ?>></rp-kundeudtalelser>
-
-	<?php
-	return ob_get_clean();
+  if(is_array($atts)){
+    foreach($atts as $key => $value){
+      $options[] = 'data-' . $key . '="' . $value . '"';
+    }
 
 
+    ob_start();
+    ?>
 
+    <rp-kundeudtalelser data-apikey="<?php echo $apiKey; ?>" <?php echo implode(" ", $options); ?>></rp-kundeudtalelser>
+
+    <?php
+    return ob_get_clean();
+  }
 }
 
 add_shortcode('review-slider', 'review_slider_shortcode');
