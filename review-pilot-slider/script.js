@@ -1,4 +1,4 @@
-function handleCheckboxVisibility(checkbox){
+function review_slider_handleCheckboxVisibility(checkbox){
     let targetId = checkbox.getAttribute('id'); 
     let targetElement = document.querySelector('.rs-input-group[data-linked="' + targetId + '"]');
     if(checkbox.checked) {
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', function(){
     checkboxes.forEach(function(checkbox){
 
         if(checkbox.checked){
-            handleCheckboxVisibility(checkbox);
+            review_slider_handleCheckboxVisibility(checkbox);
         }
 
         checkbox.addEventListener('change', function(){
-            handleCheckboxVisibility(checkbox);
+            review_slider_handleCheckboxVisibility(checkbox);
         });
     });
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     fields.forEach(field => {
         field.addEventListener('input', function(){
-            renderShortcode();
+            review_slider_renderShortcode();
         })
     })
 
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
     let shortcodeRenderElement = document.querySelector('.shortcode-render-element');
 
-    function renderShortcode(){
+    function review_slider_renderShortcode(){
         console.log('rendering');
 
         let shortcode = new Array('review-slider');
@@ -111,6 +111,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     }
 
-    renderShortcode();
+    review_slider_renderShortcode();
 
 });

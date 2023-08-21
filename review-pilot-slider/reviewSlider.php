@@ -9,7 +9,7 @@ License: GPL-2.0+
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 */
 
-// Plugin code goes here
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly      
 
 function review_slider_menu() {
 	add_menu_page (
@@ -52,14 +52,14 @@ function review_slider_init() {
  add_settings_section(
   'review-slider-api-section',
   'API Indstillinger',
-  'api_section_callback',
+  'review_slider_api_section_callback',
   'review-slider-settings'
 );
  
  add_settings_section(
   'review-slider-shortcode-section',
   'Shortcode indstillinger',
-  'shortcode_section_callback',
+  'review_slider_shortcode_section_callback',
   'review-slider-settings'
 );
 
@@ -76,7 +76,7 @@ function review_slider_init() {
 }
 add_action('admin_init', 'review_slider_init');
 
-function api_section_callback(){
+function review_slider_api_section_callback(){
   
     $value = get_option('review-slider-api-key'); ?>
     <div class="api-settings panel">
@@ -89,7 +89,7 @@ function api_section_callback(){
 
 <?php }
 
-function shortcode_section_callback(){ 
+function review_slider_shortcode_section_callback(){ 
     $display_header_option = get_option('review-slider-header-display');
     $autoplay_option = get_option('review-slider-autoplay');
     $interval_option = get_option('review-slider-interval');
@@ -109,7 +109,7 @@ function shortcode_section_callback(){
         <div class="rs-group-wrapper">
           <div class="rs-checkbox-group">
               <div class="rs-checkbox">
-                  <input type="checkbox" data-linkedup name="review-slider-header-display" id="review-slider-header-display" value="1" <?php echo checked(1, $display_header_option, true);?>/>
+                  <input type="checkbox" data-linkedup name="review-slider-header-display" id="review-slider-header-display" value="1" <?php echo esc_attr(checked(1, $display_header_option, true));?>/>
                   <label class="rs-label checkbox-label" for="review-slider-header-display">Vis header på slideren</label>
               </div>
           </div>
@@ -123,14 +123,14 @@ function shortcode_section_callback(){
         <div class="rs-group-wrapper">
           <div class="rs-checkbox-group">
               <div class="rs-checkbox">
-                  <input type="checkbox" data-linkedup name="review-slider-autoplay" id="review-slider-autoplay" value="1" <?php echo checked(1, $autoplay_option, false);?>/>
+                  <input type="checkbox" data-linkedup name="review-slider-autoplay" id="review-slider-autoplay" value="1" <?php echo esc_attr(checked(1, $autoplay_option, false));?>/>
                   <label class="rs-label checkbox-label" for="review-slider-autoplay">Afspil slideren automatisk</label>
               </div>
           </div>
 
           <div class="rs-checkbox-group">
               <div class="rs-checkbox">
-                  <input type="checkbox" name="review-slider-looping" id="review-slider-looping" value="1" <?php echo checked(1, $loop_option, false);?>/>
+                  <input type="checkbox" name="review-slider-looping" id="review-slider-looping" value="1" <?php echo esc_attr(checked(1, $loop_option, false));?>/>
                   <label class="rs-label checkbox-label" for="review-slider-looping">Kør slideren i ring</label>
               </div>
           </div>
@@ -156,7 +156,7 @@ function shortcode_section_callback(){
               );
               
               foreach ($options as $key => $label) {
-                echo '<option value="' . esc_attr($key) . '" ' . selected($key, $star_display_option, false) . '>' . esc_html($label) . '</option>';
+                echo '<option value="' . esc_attr($key) . '" ' . esc_attr(selected($key, $star_display_option, false)) . '>' . esc_html($label) . '</option>';
               } ?>
               </select>
           </div>
@@ -166,7 +166,7 @@ function shortcode_section_callback(){
         <div class="rs-group-wrapper">
           <div class="rs-checkbox-group">
               <div class="rs-checkbox">
-                  <input type="checkbox" name="review-slider-schema" id="review-slider-schema" value="1" <?php echo checked(1, $schema_option, true);?>/>
+                  <input type="checkbox" name="review-slider-schema" id="review-slider-schema" value="1" <?php echo esc_attr(checked(1, $schema_option, true));?>/>
                   <label class="rs-label checkbox-label" for="review-slider-schema">Generer schema data automatisk</label>
               </div>
           </div>
@@ -198,31 +198,34 @@ function shortcode_section_callback(){
 
 /*Shortcode registrering*/
 
-function enqueue_review_slider_script() {   
-  global $post;
-  if( is_a( $post, 'WP_Post' ) && has_shortcode( $post->post_content, 'review-slider') ) {
+function review_slider_shortcode_check( $content ) {
+
+  if ( has_shortcode( $content, 'review-slider' ) ) {
     wp_enqueue_script( 'review_slider_script', plugin_dir_url( __FILE__ ) . 'kundeudtalelser.min.js' );
   }
+
+  return $content;
 }
-add_action('wp_enqueue_scripts', 'enqueue_review_slider_script');
+
+add_filter( 'the_content', 'review_slider_shortcode_check' );
+
 
 function review_slider_shortcode($atts) {
 	
 	$apiKey = get_option('review-slider-api-key');
 
-
 	$options = [];
 
   if(is_array($atts)){
     foreach($atts as $key => $value){
-      $options[] = 'data-' . $key . '="' . $value . '"';
+      $options[] = 'data-' . esc_attr($key) . '="' . esc_attr($value) . '"';
     }
 
 
     ob_start();
     ?>
 
-    <rp-kundeudtalelser data-apikey="<?php echo $apiKey; ?>" <?php echo implode(" ", $options); ?>></rp-kundeudtalelser>
+    <rp-kundeudtalelser data-apikey="<?php echo esc_attr($apiKey); ?>" <?php echo implode(" ", $options); ?>></rp-kundeudtalelser>
 
     <?php
     return ob_get_clean();
